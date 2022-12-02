@@ -30,38 +30,38 @@ rl.on("line", (line) => {
 
 // Способ через потоки и Transform
 
-const createIpFiles = () => {
-  const readStream = fs.createReadStream(ACCESS_LOG, {
-    encoding: "utf8",
-  });
+// const createIpFiles = () => {
+//   const readStream = fs.createReadStream(ACCESS_LOG, {
+//     encoding: "utf8",
+//   });
 
-  requests.forEach((ip) => {
-    const transformStream = new Transform({
-      transform(chunk, encoding, callback) {
-        const logsArray = Array.from(chunk.toString().split("\n")).filter(
-          (item) => item.includes(ip),
-        );
+//   requests.forEach((ip) => {
+//     const transformStream = new Transform({
+//       transform(chunk, encoding, callback) {
+//         const logsArray = Array.from(chunk.toString().split("\n")).filter(
+//           (item) => item.includes(ip),
+//         );
 
-        // console.log("chunk");
-        // console.log(logsArray);
+//         // console.log("chunk");
+//         // console.log(logsArray);
 
-        const data = logsArray.join("\n");
+//         const data = logsArray.join("\n");
 
-        this.push(data);
-        callback();
-      },
-    });
+//         this.push(data);
+//         callback();
+//       },
+//     });
 
-    const fileName = `${ip}_request.log`;
-    const writeStream = fs.createWriteStream(fileName);
+//     const fileName = `${ip}_request.log`;
+//     const writeStream = fs.createWriteStream(fileName);
 
-    readStream
-      .pipe(transformStream)
-      .pipe(writeStream)
-      .on("end", () => {
-        console.log("files were created");
-      });
-  });
-};
+//     readStream
+//       .pipe(transformStream)
+//       .pipe(writeStream)
+//       .on("end", () => {
+//         console.log("files were created");
+//       });
+//   });
+// };
 
-createIpFiles();
+// createIpFiles();
